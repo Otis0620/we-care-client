@@ -7,8 +7,11 @@ export default {
         sans: ['"Plus Jakarta Sans"', 'sans-serif'], // Set as default sans font
       },
       colors: {
-        'secondary-400': '#6C7278',
+        'primary-400': '#59B29F',
+        'primary-500': '#2B7F75',
+
         'secondary-200': '#DCE4E8',
+        'secondary-400': '#6C7278',
       },
     },
   },
