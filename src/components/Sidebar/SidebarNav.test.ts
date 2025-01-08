@@ -10,7 +10,7 @@ vi.mock('vue-router', () => ({
   useRoute: vi.fn(),
 }));
 
-describe('Component SidebarNav', () => {
+describe('SidebarNav Component', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
