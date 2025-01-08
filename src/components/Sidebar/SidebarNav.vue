@@ -55,7 +55,7 @@ export default {
   <div class="flex flex-col items-center">
     <div class="flex flex-col pt-4 w-full">
       <div v-for="(menuGroup, key) in menuLinks" :key="key" class="flex flex-col pt-8">
-        <div data-testid="menu-group-header" class="flex items-center pb-4 pl-10">
+        <div data-testid="menu-group-wrapper" class="flex items-center pb-4 pl-10">
           <p class="text-[#a7a7a7] text-xs font-medium">{{ menuGroup.header }}</p>
         </div>
         <div
@@ -63,11 +63,12 @@ export default {
           :key="index"
           class="flex items-center py-3 cursor-pointer pl-10"
           :class="{ active: activeLink.menu === key && activeLink.index === index }"
-          data-testid="menu-link"
+          data-testid="menu-item-wrapper"
         >
           <router-link
             :to="menuLink.routeName"
             class="flex items-center"
+            data-testid="router-link"
             @click="toggleMenuLink(key, index)"
           >
             <img

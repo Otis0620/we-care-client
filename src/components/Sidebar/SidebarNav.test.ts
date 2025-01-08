@@ -31,7 +31,7 @@ describe('Component SidebarNav', () => {
       },
     });
 
-    const headers = wrapper.findAll('[data-testid="menu-group-header"]');
+    const headers = wrapper.findAll('[data-testid="menu-group-wrapper"]');
     const expectedHeaders = Object.values(menuLinks).map((group) => group.header);
 
     expect(headers.length).toBe(expectedHeaders.length);
@@ -57,23 +57,71 @@ describe('Component SidebarNav', () => {
       },
     });
 
-    const menuItems = wrapper.findAll('[data-testid="menu-link"]');
+    const menuItems = wrapper.findAll('[data-testid="menu-item-wrapper"]');
     const expectedMenuItems = Object.values(menuLinks).flatMap((group) => group.menu);
 
     menuItems.forEach((menuItemWrapper, index) => {
       const menuItem = expectedMenuItems[index];
-      let icon = '';
+      const isActive = menuItem.routeName === RouteName.Dashboard;
+      const expectedIcon = isActive ? menuItem.icon.active : menuItem.icon.inActive;
+      const expectedColor = isActive ? 'text-primary-500' : 'text-secondary-400';
 
-      if (menuItem.routeName === RouteName.Dashboard) {
-        icon = menuItem.icon.active;
-      } else {
-        icon = menuItem.icon.inActive;
-      }
-
-      const text = menuItem.text;
-
-      expect(menuItemWrapper.find('img').attributes('src')).toBe(icon);
-      expect(menuItemWrapper.text()).toContain(text);
+      expect(menuItemWrapper.find('img').attributes('src')).toBe(expectedIcon);
+      expect(menuItemWrapper.find('p').classes()).toContain(expectedColor);
+      expect(menuItemWrapper.text()).toContain(menuItem.text);
     });
+  });
+
+  it('should update the icon src when a menu item is clicked', async () => {
+    (useRoute as Mock).mockReturnValue({
+      path: RoutePath.Dashboard,
+      name: RouteName.Dashboard,
+    });
+
+    const wrapper = mount(SidebarNav, {
+      global: {
+        stubs: {
+          'router-link': {
+            template: '<a><slot /></a>',
+          },
+        },
+      },
+    });
+
+    const routerLink = wrapper.findAll('[data-testid="router-link"]')[1];
+
+    const expectedMenuItem = menuLinks['mainMenu'].menu[1];
+
+    expect(routerLink.find('img').attributes('src')).toBe(expectedMenuItem.icon.inActive);
+
+    await routerLink.trigger('click');
+
+    expect(routerLink.find('img').attributes('src')).toBe(expectedMenuItem.icon.active);
+  });
+
+  it('should update the menu item styling on click', async () => {
+    (useRoute as Mock).mockReturnValue({
+      path: RoutePath.Dashboard,
+      name: RouteName.Dashboard,
+    });
+
+    const wrapper = mount(SidebarNav, {
+      global: {
+        stubs: {
+          'router-link': {
+            template: '<a><slot /></a>',
+          },
+        },
+      },
+    });
+
+    const menuItems = wrapper.findAll('[data-testid="router-link"]');
+    const secondMenuItem = menuItems[1];
+
+    expect(secondMenuItem.find('p').classes()).toContain('text-secondary-400');
+
+    await secondMenuItem.trigger('click');
+
+    expect(secondMenuItem.find('p').classes()).toContain('text-primary-500');
   });
 });
