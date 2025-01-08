@@ -1,29 +1,30 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { Dashboard } from '@/features/dashboard';
 import { Patients } from '@/features/patients';
+import { RouteName, RoutePath } from '@/enums';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
-      name: 'dashboard',
+      path: RoutePath.Dashboard,
+      name: RouteName.Dashboard,
       component: Dashboard,
     },
     {
-      path: '/patients',
-      name: 'patients',
+      path: RoutePath.Patients,
+      name: RouteName.Patients,
       component: Patients,
     },
-    // {
-    //   path: '/about',
-    //   name: 'about',
-    //   // route level code-splitting
-    //   // this generates a separate chunk (About.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import('../views/AboutView.vue'),
-    // },
   ],
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.path === '/') {
+    next({ name: RouteName.Dashboard });
+  } else {
+    next();
+  }
 });
 
 export default router;

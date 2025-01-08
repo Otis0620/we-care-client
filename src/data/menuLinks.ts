@@ -16,7 +16,8 @@ import infoCircleIcon from '@/assets/images/icons/info-circle-18x18.svg';
 import infoCircleGreenIcon from '@/assets/images/icons/info-circle-green-18x18.svg';
 import settingsIcon from '@/assets/images/icons/settings-18x18.svg';
 import settingsGreenIcon from '@/assets/images/icons/settings-green-18x18.svg';
-import type { MenuLinkType } from '@/types/MenuLinkType';
+import type { MenuLinkType } from '@/types/MenuLink';
+import { RouteName } from '@/enums';
 
 export const menuLinks: MenuLinkType = {
   mainMenu: {
@@ -28,6 +29,7 @@ export const menuLinks: MenuLinkType = {
           active: categoryGreenIcon,
         },
         text: 'Overview',
+        routeName: RouteName.Dashboard,
       },
       {
         icon: {
@@ -35,6 +37,7 @@ export const menuLinks: MenuLinkType = {
           active: peopleGreenIcon,
         },
         text: 'Patients',
+        routeName: RouteName.Patients,
       },
       {
         icon: {
@@ -42,6 +45,7 @@ export const menuLinks: MenuLinkType = {
           active: calendarGreenIcon,
         },
         text: 'Appointment',
+        routeName: RouteName.Appointments,
       },
       {
         icon: {
@@ -49,6 +53,7 @@ export const menuLinks: MenuLinkType = {
           active: flagGreenIcon,
         },
         text: 'Report',
+        routeName: RouteName.Reports,
       },
     ],
   },
@@ -61,6 +66,7 @@ export const menuLinks: MenuLinkType = {
           active: data2GreenIcon,
         },
         text: 'Department',
+        routeName: RouteName.Departments,
       },
       {
         icon: {
@@ -68,6 +74,7 @@ export const menuLinks: MenuLinkType = {
           active: dollarCircleGreenIcon,
         },
         text: 'Payment',
+        routeName: RouteName.Payments,
       },
       {
         icon: {
@@ -75,6 +82,7 @@ export const menuLinks: MenuLinkType = {
           active: boxGreenIcon,
         },
         text: 'Product & Stock',
+        routeName: RouteName.Products,
       },
     ],
   },
@@ -87,6 +95,7 @@ export const menuLinks: MenuLinkType = {
           active: infoCircleGreenIcon,
         },
         text: 'Help & Center',
+        routeName: RouteName.Help,
       },
       {
         icon: {
@@ -94,6 +103,7 @@ export const menuLinks: MenuLinkType = {
           active: settingsGreenIcon,
         },
         text: 'Settings',
+        routeName: RouteName.Settings,
       },
     ],
   },

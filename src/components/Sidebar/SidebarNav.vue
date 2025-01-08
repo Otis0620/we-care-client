@@ -1,6 +1,8 @@
 <script lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { menuLinks } from '@/data/menuLinks';
+import type { MenuLinkType } from '@/types';
+import { useRoute } from 'vue-router';
 
 export default {
   setup() {
@@ -9,6 +11,8 @@ export default {
       index: null,
     });
 
+    const route = useRoute();
+
     const toggleMenuLink = (menuType: string, index: number) => {
       if (activeLink.value.menu === menuType && activeLink.value.index === index) {
         activeLink.value = { menu: null, index: null };
@@ -16,6 +20,27 @@ export default {
         activeLink.value = { menu: menuType, index };
       }
     };
+
+    watch(
+      () => route.name,
+      (newRouteName) => {
+        Object.keys(menuLinks).forEach((group) => {
+          const menuGroup = group as keyof MenuLinkType;
+
+          const matchingMenuLink = menuLinks[menuGroup].menu.find(
+            (menuItem) => menuItem.routeName === newRouteName,
+          );
+
+          if (matchingMenuLink) {
+            activeLink.value = {
+              menu: menuGroup,
+              index: menuLinks[menuGroup].menu.indexOf(matchingMenuLink),
+            };
+          }
+        });
+      },
+      { immediate: true },
+    );
 
     return {
       menuLinks,
@@ -38,27 +63,32 @@ export default {
           :key="index"
           class="flex items-center py-3 cursor-pointer pl-10"
           :class="{ active: activeLink.menu === key && activeLink.index === index }"
-          @click="toggleMenuLink(key, index)"
           data-testid="menu-link"
         >
-          <img
-            :src="
-              activeLink.menu === key && activeLink.index === index
-                ? menuLink.icon.active
-                : menuLink.icon.inActive
-            "
-            class="pr-2"
-          />
-          <p
-            class="text-sm"
-            :class="
-              activeLink.menu === key && activeLink.index === index
-                ? 'text-primary-500'
-                : 'text-secondary-400'
-            "
+          <router-link
+            :to="menuLink.routeName"
+            class="flex items-center"
+            @click="toggleMenuLink(key, index)"
           >
-            {{ menuLink.text }}
-          </p>
+            <img
+              :src="
+                activeLink.menu === key && activeLink.index === index
+                  ? menuLink.icon.active
+                  : menuLink.icon.inActive
+              "
+              class="pr-2"
+            />
+            <p
+              class="text-sm"
+              :class="
+                activeLink.menu === key && activeLink.index === index
+                  ? 'text-primary-500'
+                  : 'text-secondary-400'
+              "
+            >
+              {{ menuLink.text }}
+            </p>
+          </router-link>
         </div>
       </div>
     </div>

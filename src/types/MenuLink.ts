@@ -1,3 +1,5 @@
+import type { RouteName } from '@/enums';
+
 interface MenuLink {
   header: string;
   menu: {
@@ -6,6 +8,7 @@ interface MenuLink {
       active: string;
     };
     text: string;
+    routeName: RouteName;
   }[];
 }
 
